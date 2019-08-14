@@ -1,11 +1,5 @@
 # exceldb  
-Note: Currently only for code testing - work in progress.
-
-Version 2 of edit-tabletest: Flexible database excel-like sheets.
-This version is a lightweight code, vanilla javascript. It is called in a similar fashion to edit-tabletest, see description https://github.com/srldl/edit-tabletest
-
-
-# edit-tabletest
+Excel-like web user interface which can be connected to a database backend. This version is a lightweight code, vanilla javascript. 
 
 
 ![alt text](https://github.com/srldl/edit-tabletest/blob/master/img/ecotox.jpg)
