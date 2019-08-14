@@ -45,28 +45,37 @@ function saveToDb(jsonObj){
 }
 
 
+//Create object with input parameters such as
+let dataRows=   [["A","Albuquerque","2019-06-14T12:00:00Z","A1"],
+                  ["B","Alicante","2019-06-13T12:00:00Z","B1"],
+                  ["C","Alabama","2019-06-14T12:00:00Z","C1 has very long event name"],
+                  ["D","Alkekongen","2019-07-17T12:00:00Z","D1"]];
+
 //Create object with input parameters
-let obj =  {  "dataRows": [{"project":"A","subproject":"AA","event_date":"2019-06-14T12:00:00Z"},
-			   {"project":"B","subproject":"BB", event_date":"2019-06-14T12:00:00Z"}],
-              "headers": ["project", "subproject", "event_date"],
-              "selectlist": {"project":["A","B","C"]},
-              "autocompletes": ["subproject"],
+let obj =  {  "dataRows": dataRows,
+              "headers": ["project", "subproject", "event_date","event"],
+              "headers_tooltip": ["project acronym","subproject name","start date","event name"],
+              "selectlist": {"project":["A","B","C","D"]},
+              "autocompletes": {"subproject":"internal"},
               "dateFields":["event_date"],
-              "id": "exceltable"
-          };
+              "id": "exceldb",
+              "sanitize":true
+};
 
  //Call edit-tabletest with callback handled in saveToDB
  tb.insertTable( obj, saveToDb);
   
 ```
   where
-- dataRows: The rows from the database to display (previously saved rows)
-- headers: Column headers
+- dataRows: The rows from the database to display (typically previously saved rows) og just an empty double array.
+- headers: Column headers 
+- headers_tooltip: Text describing the column headers more thoroughly.
 - selectlist: 1) Column headers where selectlist should be created and 2) the select list alternatives.
-- autocompletes: Column headers where autocomplete should be offered. Options for autocomplete is the unique names previously written in the same column.
+- autocompletes: Column headers where autocomplete should be offered. Options for autocomplete are unique names previously written in the same column.
 - dataFields: Column headers to be interpreted as a date field.
 - id: table id name. Each row id will be called table id name and a running number starting from 1,
-f.ex. "exceltable-1"
+f.ex. "exceldb-1"
+- sanitize: Set to true if you want to sanitize the input content before saving. Read xxx for more info on sanitizing https://www.smashingmagazine.com/2011/01/keeping-web-users-safe-by-sanitizing-input-data/
 
 ## Functionality
 - Multiple rows can be created and copied. Use "Add rows" to add multiple new or copied rows.
@@ -76,8 +85,7 @@ f.ex. "exceltable-1"
   
   
  ## Known larger issues
- - Search does not work yet.
- - Sometimes the ability to select a row gets stuck. If so, refresh browser.
+ Testing these days..
  
  
   
