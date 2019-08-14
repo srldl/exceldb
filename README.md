@@ -1,14 +1,10 @@
 # exceldb  
-Excel-like web user interface which can be connected to a database backend. Lightweight code, vanilla javascript. 
-
 
 ![alt text](https://github.com/srldl/edit-tabletest/blob/master/img/ecotox.jpg)
 
-Create a package for a database version of an excel sheet. The code reuses DataTables modules which again depends on jQuery. Basically another version of editor dataTable.
+Excel-like web user interface which can be connected to a database backend. Lightweight code, vanilla javascript. 
 
-For DataTables see https://datatables.net/
-
-Note: This is a first version and some flaws has been found, see issues. 
+Note: This is a first version, work in progress. See issues for errors and flaws. 
 
 
 ## Install
@@ -16,7 +12,7 @@ Note: This is a first version and some flaws has been found, see issues.
 Download and install:
 
 ```
-npm install github.com/srldl/edit-tabletest
+npm i github.com/srldl/exceldb
 ```
 
 ## Use
