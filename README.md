@@ -41,11 +41,12 @@ In your javascript file:
 ```
 //Return json object where one array is one row
 function saveToDb(jsonObj){
+    //Save or do something with the data received.
     console.log(jsonObj);
 }
 
 
-//Create object with input parameters such as
+//Create object with input parameters (from databse) f.ex.
 let dataRows=   [["A","Albuquerque","2019-06-14T12:00:00Z","A1"],
                   ["B","Alicante","2019-06-13T12:00:00Z","B1"],
                   ["C","Alabama","2019-06-14T12:00:00Z","C1 has very long event name"],
