@@ -76,7 +76,7 @@ let obj =  {  "dataRows": dataRows,
 - id: table id name. Each row id will be called table id name and a running number starting from 1,
 f.ex. "exceldb-1"
 - sanitize: Set to true if you want to sanitize the input content before saving. Read about the
-[[sanitizing|https://gomakethings.com/preventing-cross-site-scripting-attacks-when-using-innerhtml-in-vanilla-javascript/]] used.
+[sanitizing](https://gomakethings.com/preventing-cross-site-scripting-attacks-when-using-innerhtml-in-vanilla-javascript/) used.
 
 
 
