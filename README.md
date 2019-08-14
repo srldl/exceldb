@@ -1,5 +1,5 @@
 # exceldb  
-Excel-like web user interface which can be connected to a database backend. This version is a lightweight code, vanilla javascript. 
+Excel-like web user interface which can be connected to a database backend. Lightweight code, vanilla javascript. 
 
 
 ![alt text](https://github.com/srldl/edit-tabletest/blob/master/img/ecotox.jpg)
