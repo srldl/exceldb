@@ -75,7 +75,9 @@ let obj =  {  "dataRows": dataRows,
 - dataFields: Column headers to be interpreted as a date field.
 - id: table id name. Each row id will be called table id name and a running number starting from 1,
 f.ex. "exceldb-1"
-- sanitize: Set to true if you want to sanitize the input content before saving. Read xxx for more info on sanitizing https://www.smashingmagazine.com/2011/01/keeping-web-users-safe-by-sanitizing-input-data/
+- sanitize: Set to true if you want to sanitize the input content before saving. Read xxx for more info on sanitizing used.
+https://gomakethings.com/preventing-cross-site-scripting-attacks-when-using-innerhtml-in-vanilla-javascript/
+
 
 ## Functionality
 - Multiple rows can be created and copied. Use "Add rows" to add multiple new or copied rows.
