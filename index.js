@@ -1,25 +1,31 @@
 'use strict';
+var exports = module.exports = {};
+
+//require('./style.css');
 
 //Testdata
 //the rows
-let dataRows=   [["A","Alibaba","2019-06-14T12:00:00Z","A"],["B","Alicante","2019-06-13T12:00:00Z","A"],
-                ["C","Allverdens","2019-06-14T12:00:00Z","Alt er veldig, veldig langt"],["D","Al Jazeera","2019-07-17T12:00:00Z","A"]];
+/*let dataRows=   [["A","Albuquerque","2019-06-14T12:00:00Z","A1"],
+                  ["B","Alicante","2019-06-13T12:00:00Z","B1"],
+                  ["C","Alabama","2019-06-14T12:00:00Z","C1 is very long text event name"],
+                  ["D","Alkekongen","2019-07-17T12:00:00Z","D1"]];
 
 //Create object with input parameters
 let obj =  {  "dataRows": dataRows,
-              "headers": ["project", "subproject", "event_date","fourt_event_on"],
-              "headers_tooltip": ["project acronym","subproject acronym","start work date"],
+              "headers": ["project", "subproject", "event_date","event"],
+              "headers_tooltip": ["project acronym","subproject name","start date","event name"],
               "selectlist": {"project":["A","B","C","D"]},
               "autocompletes": {"subproject":"internal"},
               "dateFields":["event_date"],
-              "id": "exceltable",
+              "id": "exceldb",
               "sanitize":true
-};
+};*/
 
+exports.insertTable = function(obj, callback) {
 
 //Unfortunately, some global parameters
 //Holds the width of the table
-let col_length = obj.headers.length + 2;
+let col_length = obj.headers.length + 1;
 //This counter holds next row_number
 let row_length = 1;
 //Holds the array marked for copy
@@ -29,21 +35,29 @@ let prev_selected_cell = '';
 
 
 //Create input cell
-function input_element(id_td,id,inputValue,typefield, autocomplete){
+//inputValue =
+//typefield = element type
+//autocomplete = internal autocomplete
+//disabled = input field disabled?
+function input_element(id_td,id, inputValue, typefield, autocomplete, readonly){
   var td = document.createElement("td");
   td.id = id_td;
   //if column has autocomplete attach class
   if (autocomplete){
-        td.classList.add("autocomplete");
+        td.classList.add("autocomplete2");
   };
   //Child element
   var input = document.createElement("input");
   input.type = typefield;
   input.id = id;
   input.value= inputValue;
+  if (readonly) {
+      input.setAttribute("readonly", true);
+  }
   td.appendChild(input);
   return td;
 }
+
 
 //Create select cell
 function select_element(id_td, id_select, header_name, val){
@@ -87,11 +101,10 @@ function td_element (id,innerhtml){
     return td0;
 }
 
-
-
 //Create the next row in the table
-//Caled by newBtn, copyBtn, and during table initialization
-function newRow(num,input_text){
+//Called by newBtn, copyBtn, and during table initialization
+function newRow(num,input_text,id){
+
 //Number of rows
 for (let i=0;i<num;i++){
     let tr = document.createElement("tr");
@@ -99,25 +112,39 @@ for (let i=0;i<num;i++){
     tr.appendChild(td_element('count_'+row_length,row_length));
     //Second to almost last column is user info
     let td;
-    for (let j=1;j<obj.headers.length+1;j++){
+
+    for (let j=0;j<obj.headers.length;j++){
+
       //Difference between empty row and row with input
-      let inp = (input_text == '') ? '' : (input_text[i][j-1]);
+      let inp = (input_text == '') ? '' : (input_text[i][obj.headers[j]]);
 
-      if (obj.selectlist.hasOwnProperty(obj.headers[j-1])) {  //Select field
-         td = select_element('td_'+row_length+'_'+j,'select_'+row_length+'_'+j,obj.headers[j-1],inp);
+      if (obj.selectlist.hasOwnProperty(obj.headers[j])) {  //Select field
+         td = select_element('td_'+row_length+'_'+(j+1),'select_'+row_length+'_'+(j+1),obj.headers[j],inp);
 
-      } else if (obj.dateFields.includes(obj.headers[j-1])){  //input date field
+      } else if (obj.dateFields.includes(obj.headers[j])){  //input date field
           let date = (inp == '') ? '' : inp.substring(0,10);
-          td = input_element('td_'+row_length+'_'+j,'input_'+row_length+'_'+j,date,'date',false);
-
+          td = input_element('td_'+row_length+'_'+(j+1),'input_'+row_length+'_'+(j+1),date,'date',false,false);
+      } else if ((j === (obj.headers.length-1))&&(id === false)) {//last field containing ids should not be modified
+          td = input_element('td_'+row_length+'_'+(j+1),'input_'+row_length+'_'+(j+1),inp,'text',true, true);
+      } else if ((j === (obj.headers.length-1))&&(id === true)) {//last field - create new id
+          //Get the last written id
+          if (container.lastChild.cells) {
+             let id_num = container.lastChild.cells[obj.headers.length].lastChild.value;
+             let id_arr = id_num.split('-'); //split to get the running number
+             inp = obj.id +  "-" + (parseInt(id_num.split('-')[id_arr.length-1]) + 1).toString(); //The new, calculated id value
+          } else {
+             inp = obj.id +  "-1";
+          }
+          td = input_element('td_'+row_length+'_'+(j+1),'input_'+row_length+'_'+(j+1),inp,'text',true, true);
       } else {  //ordinary input field
-         td = input_element('td_'+row_length+'_'+j,'input_'+row_length+'_'+j,inp,'text',true);
+          td = input_element('td_'+row_length+'_'+(j+1),'input_'+row_length+'_'+(j+1),inp,'text',true, false);
       }
       tr.appendChild(td);
 
 }
+
 //Id columns
-tr.appendChild(td_element('id_'+row_length,obj.id+'-'+row_length));
+//tr.appendChild(td_element('id_'+row_length,obj.id+'-'+row_length));
 row_length++;
 container.appendChild(tr);
 }
@@ -138,20 +165,20 @@ container.appendChild(tr);
   }
 
   //c. ..finally the id header
-  let th_last = th_element("header_"+obj.headers.length,"id",'');
-  container_header.appendChild(th_last);
+//  let th_last = th_element("header_"+obj.headers.length,"id",'');
+//  container_header.appendChild(th_last);
 
   //2. Insert values into table body
   let container = document.getElementById("tbody1");
 
   //This only applies if obj.dataRows (fetched rows) is empty, otherwise omitted
   if (obj.dataRows === undefined || obj.dataRows.length === 0) {
-    newRow(1,"");
+    newRow(1,"",true);
   } else {
     //The table body
-    newRow(obj.dataRows.length,obj.dataRows);
+    newRow(obj.dataRows.length,obj.dataRows,false);
     //Set up autocomplete if existing
-    let autocomplete = document.getElementsByClassName("autocomplete");
+    let autocomplete = document.getElementsByClassName("autocomplete2");
   }
 
   //Autocompletes internal function:
@@ -181,8 +208,8 @@ container.appendChild(tr);
      currentFocus = -1;
      /*create a DIV element that will contain the items (values):*/
      a = document.createElement("div");
-     a.setAttribute("id", input_field.id + "autocomplete-list");
-     a.setAttribute("class", "autocomplete-items");
+     a.setAttribute("id", input_field.id + "autocomplete2-list");
+     a.setAttribute("class", "autocomplete2-items");
      /*append the DIV element as a child of the autocomplete container:*/
      input_field.parentNode.appendChild(a);
      /*for each item in the array...*/
@@ -289,7 +316,7 @@ let click = function (event) {
    closeAllLists(event.target);
 
    let doc = document.getElementById(event.target.id);
-   if (doc === null) { return };
+   if ((doc === null)||(doc.value == '')) { return };
 
    let elem = doc.parentElement;
    //Remove borders from the previous selected cell
@@ -313,7 +340,7 @@ function addActive(x) {
    if (currentFocus >= x.length) currentFocus = 0;
    if (currentFocus < 0) currentFocus = (x.length - 1);
    /*add class "autocomplete-active":*/
-   x[currentFocus].classList.add("autocomplete-active");
+   x[currentFocus].classList.add("autocomplete2-active");
  }
 
  //Autocomplete
@@ -328,7 +355,7 @@ function addActive(x) {
  function closeAllLists(input_field,elmnt) {
    /*close all autocomplete lists in the document,
    except the one passed as an argument:*/
-   var x = document.getElementsByClassName("autocomplete-items");
+   var x = document.getElementsByClassName("autocomplete2-items");
    for (var i = 0; i < x.length; i++) {
      if (elmnt != x[i] && elmnt != input_field) {
      x[i].parentNode.removeChild(x[i]);
@@ -367,13 +394,13 @@ var sanitizeHTML = function (str) {
 //Sanitizes, called by savebtn and copybtn
 function get_row_values(tr) {
   let arr = [];
-  for (let i=1;i<tr.childNodes.length-1; i++){
+  for (let i=1;i<tr.childNodes.length; i++){
     let str = tr.childNodes[i].childNodes[0].value;
     //sanitize input if requested
     let temp = (obj.sanitize === false) ? str : sanitizeHTML(str);
     arr.push(temp);
   }
-  arr.push(tr.childNodes[col_length-1].childNodes[0].data);
+  //arr.push(tr.childNodes[col_length-1].childNodes[0].data);
   return [arr];
 }
 
@@ -386,15 +413,13 @@ function addRows(){
 
 //new button pressed
 let newBtn = function (event) {
-    console.log('newBtn');
     //Get number of new rows wanted
     let num = addRows();
-    newRow(num,"");
+    newRow(num,"",true);
 };
 
 // copy button pressed
 let copyBtn = function (event) {
-    console.log('copyBtn');
     if (prev_selected_cell == '') {
        alert("Please select a row");
     } else {    //Get the selected row
@@ -405,16 +430,20 @@ let copyBtn = function (event) {
        let arr = get_row_values(tr);
        //Id is returned as well, remove it.
        arr[0].pop();
+       let obj2 = {};
+       //Need to convert array to object
+       for (let k=0;k<obj.headers.length;k++){
+          obj2[obj.headers[k]] = arr[0][k];
+       }
        //Create requested row(s) with the values
        for (let i=0;i<num;i++){
-           newRow(1,arr);
+           newRow(1,[obj2],true);
        }
     }
 };
 
 // save button pressed
 let delBtn = function (event) {
-    console.log('delBtn');
     if (prev_selected_cell == '') {
        alert("Please select a row");
     } else {    //Get the selected row
@@ -425,15 +454,19 @@ let delBtn = function (event) {
 
 // save button pressed
 let saveBtn = function (event) {
-    console.log('saveBtn');
-    container = document.getElementById("tbody1");
+    let saveJson = [];
     let arr=[];
+    container = document.getElementById("tbody1");
     //Fetch values by row, store in double array
+
     for (let i=1;i<row_length;i++){
+        if (typeof(container.childNodes[i]) !== 'undefined'){
          let tr = get_row_values( container.childNodes[i]);
-         arr.push(tr);
-    }
-    console.log(arr);
+         arr.push(tr[0]);
+    }}
+    saveJson.push(arr);
+    obj.dataRows = saveJson[0];
+    callback(obj);
 };
 
 document.getElementById("tbody1").addEventListener("dragover", dragover);
@@ -445,3 +478,5 @@ document.getElementById("newBtn").addEventListener('click', newBtn);
 document.getElementById("copyBtn").addEventListener('click', copyBtn);
 document.getElementById("delBtn").addEventListener('click', delBtn);
 document.getElementById("saveBtn").addEventListener('click', saveBtn);
+
+}
