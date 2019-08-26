@@ -17,6 +17,7 @@
 
 .exceldb th {
   text-align: left;
+  min-width:60px;
 }
 
 /* Each table cell */

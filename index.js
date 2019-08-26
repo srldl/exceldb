@@ -316,7 +316,9 @@ let click = function (event) {
    closeAllLists(event.target);
 
    let doc = document.getElementById(event.target.id);
-   if ((doc === null)||(doc.value == '')) { return };
+
+   if (doc === null) { return };
+  // if ((doc === null)||(doc.value == '')) { return };
 
    let elem = doc.parentElement;
    //Remove borders from the previous selected cell
