@@ -66,8 +66,8 @@ let dataRows=   [["A","Albuquerque","2019-06-14T12:00:00Z","A1"],
 
 //Create object with input parameters
 let obj =  {  "dataRows": dataRows,
-              "headers": ["project", "subproject", "event_date","event"],
-              "headers_tooltip": ["project acronym max 5 letters","subproject name","start date","event name"],
+              "headers": ["project", "subproject", "event_date","event", "id"],
+              "headers_tooltip": ["project acronym max 5 letters","subproject name","start date","event name","identifier"],
               "selectlist": {"project":["A","B","C","D"]},
               "autocompletes": {"subproject":"internal"},
               "dateFields":["event_date"],
@@ -93,7 +93,7 @@ function saveDb(jsonObj){
 ```
   where
 - dataRows: The rows from the database to display (previously saved rows)
-- headers: Column headers 
+- headers: Column headers. At the moment, you need to add the "id" as the last column to include it.
 - headers_tooltip: Header field elaborations if you need to explain the header further.
 - selectlist: 1) Column headers where the selectlist should be created and 2) the select list alternatives.
 - autocompletes: Column headers where autocomplete should be offered. Autocomplete alternatives are unique strings previously written in the same column.
