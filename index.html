@@ -8,29 +8,28 @@
     <title>Tabletest</title>
 
     <link rel="stylesheet" type="text/css" href="./style.css">
-  <!--  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
 
 </head>
 <body>
 
-  <button type="button" id="newBtn" >New</button>
-  <button type="button" id="copyBtn">Copy</button>
-  Add rows: <input type="text" name="addRows" id="addRows" size=2 maxlength=2>
-  <button type="button" id="delBtn">Delete</button>
-  <button type="button" id="saveBtn">Save</button>
+
+<div class="exceldb" style="width: 100%; overflow:auto; float:left; overflow-y:auto; height:85%;"> 
+ <button type="button" id="newBtn" >New</button>
+ <button type="button" id="copyBtn">Copy</button>
+ Add rows: <input type="text" name="addRows" id="addRows" size=2 maxlength=2>
+ <button type="button" id="delBtn">Delete</button>
+ <button type="button" id="saveBtn">Save</button>
+
+     <table id="edit_table">
+         <thead>
+             <tr id="header1">
+             </tr>
+         </thead>
+         <tbody id="tbody1">
+         </tbody>
+     </table>
+</div>
 
 
-<!--  <table id="table1" class="display" width="100%"></table> -->
-
-      <table>
-          <thead>
-              <tr id="header1">
-              </tr>
-          </thead>
-          <tbody id="tbody1">
-          </tbody>
-      </table>
-
-  <script src="bundle.js"></script>
 </body>
 </html>
