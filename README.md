@@ -1,6 +1,6 @@
 # exceldb  
 
-![alt text](https://github.com/srldl/edit-tabletest/blob/master/img/ecotox.jpg)
+![alt text](https://github.com/srldl/exceldb/blob/master/img/exceldb.jpg)
 
 The database version of an excel sheet. Excel-like web user interface which can be connected to a database backend. Lightweight code, vanilla javascript. 
 
