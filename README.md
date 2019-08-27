@@ -65,6 +65,7 @@ let dataRows=   [["A","Albuquerque","2019-06-14T12:00:00Z","A1"],
                   ["D","Alkekongen","2019-07-17T12:00:00Z","D1"]];
 
 //Create object with input parameters
+//For headers, at the moment the last parameter should be id.
 let obj =  {  "dataRows": dataRows,
               "headers": ["project", "subproject", "event_date","event", "id"],
               "headers_tooltip": ["project acronym max 5 letters","subproject name","start date","event name","identifier"],
