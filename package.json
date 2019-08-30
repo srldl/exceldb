@@ -1,6 +1,6 @@
 {
   "name": "@srldl/exceldb",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "\"Flexible excel-like UI for databases. Lightweight, vanilla javascript\",",
   "main": "index.js",
   "scripts": {
