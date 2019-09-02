@@ -9,7 +9,6 @@ var exports = module.exports = {};
                   ["B","Alicante","2019-06-13T12:00:00Z","B1"],
                   ["C","Alabama","2019-06-14T12:00:00Z","C1 is very long text event name"],
                   ["D","Alkekongen","2019-07-17T12:00:00Z","D1"]];
-
 //Create object with input parameters
 let obj =  {  "dataRows": dataRows,
               "headers": ["project", "subproject", "event_date","event"],
@@ -24,14 +23,12 @@ let obj =  {  "dataRows": dataRows,
 exports.insertTable = function(obj, callback) {
 
 //Unfortunately, some global parameters
-//Holds the width of the table
-let col_length = obj.headers.length + 1;
 //This counter holds next row_number
-let row_length = 1;
+var row_length = 1;
 //Holds the array marked for copy
-let drag_arr = [];
+var drag_arr = [];
 //The previous selected cell
-let prev_selected_cell = '';
+var prev_selected_cell = '';
 
 
 //Create input cell
@@ -65,10 +62,10 @@ function select_element(id_td, id_select, header_name, val){
   td.id = id_td;
 
   //Find the select options from the input object named obj
-  let arr = obj.selectlist[header_name];
-  let returnstring = '';
+  var arr = obj.selectlist[header_name];
+  var returnstring = '';
   if (arr != undefined) {
-        for (let i in arr) {
+        for (var i in arr) {
             if (arr[i] === val) {
               returnstring += "<option value='" + arr[i] + "'selected>" + arr[i] + "</option>";
             } else {
@@ -86,7 +83,7 @@ function select_element(id_td, id_select, header_name, val){
 
 //Create header element
 function th_element(id,textContent, textTooltip){
-  let th = document.createElement("th");
+  var th = document.createElement("th");
   th.id = id;
   th.title = textTooltip;
   th.textContent = textContent;
@@ -95,7 +92,7 @@ function th_element(id,textContent, textTooltip){
 
 //Create new td element
 function td_element (id,innerhtml){
-    let td0 = document.createElement("td");
+    var td0 = document.createElement("td");
     td0.id = id;
     td0.innerHTML = innerhtml;
     return td0;
@@ -106,31 +103,31 @@ function td_element (id,innerhtml){
 function newRow(num,input_text,id){
 
 //Number of rows
-for (let i=0;i<num;i++){
-    let tr = document.createElement("tr");
+for (var i=0;i<num;i++){
+    var tr = document.createElement("tr");
     //Count column
     tr.appendChild(td_element('count_'+row_length,row_length));
     //Second to almost last column is user info
-    let td;
+    var td;
 
-    for (let j=0;j<obj.headers.length;j++){
+    for (var j=0;j<obj.headers.length;j++){
 
       //Difference between empty row and row with input
-      let inp = (input_text == '') ? '' : (input_text[i][obj.headers[j]]);
+      var inp = (input_text == '') ? '' : (input_text[i][obj.headers[j]]);
 
       if (obj.selectlist.hasOwnProperty(obj.headers[j])) {  //Select field
          td = select_element('td_'+row_length+'_'+(j+1),'select_'+row_length+'_'+(j+1),obj.headers[j],inp);
 
       } else if (obj.dateFields.includes(obj.headers[j])){  //input date field
-          let date = (inp == '') ? '' : inp.substring(0,10);
+          var date = (inp == '') ? '' : inp.substring(0,10);
           td = input_element('td_'+row_length+'_'+(j+1),'input_'+row_length+'_'+(j+1),date,'date',false,false);
       } else if ((j === (obj.headers.length-1))&&(id === false)) {//last field containing ids should not be modified
           td = input_element('td_'+row_length+'_'+(j+1),'input_'+row_length+'_'+(j+1),inp,'text',true, true);
       } else if ((j === (obj.headers.length-1))&&(id === true)) {//last field - create new id
           //Get the last written id
           if (container.lastChild.cells) {
-             let id_num = container.lastChild.cells[obj.headers.length].lastChild.value;
-             let id_arr = id_num.split('-'); //split to get the running number
+             var id_num = container.lastChild.cells[obj.headers.length].lastChild.value;
+             var id_arr = id_num.split('-'); //split to get the running number
              inp = obj.id +  "-" + (parseInt(id_num.split('-')[id_arr.length-1]) + 1).toString(); //The new, calculated id value
           } else {
              inp = obj.id +  "-1";
@@ -152,24 +149,24 @@ container.appendChild(tr);
 
   //Table initialization
   //1. Create headers:
-  let container_header = document.getElementById("header1");
+  var container_header = document.getElementById("header1");
 
   //a. First column is the count..
-  let th0 = th_element("header_0","no",'');
+  var th0 = th_element("header_0","no",'');
   container_header.appendChild(th0);
 
   //b. ..the next is the user headings..
-  for (let i=0;i<obj.headers.length;i++){
-      let th = th_element("header_"+ i,obj.headers[i],obj.headers_tooltip[i]);
+  for (var i=0;i<obj.headers.length;i++){
+      var th = th_element("header_"+ i,obj.headers[i],obj.headers_tooltip[i]);
       container_header.appendChild(th);
   }
 
   //c. ..finally the id header
-//  let th_last = th_element("header_"+obj.headers.length,"id",'');
+//  var th_last = th_element("header_"+obj.headers.length,"id",'');
 //  container_header.appendChild(th_last);
 
   //2. Insert values into table body
-  let container = document.getElementById("tbody1");
+  var container = document.getElementById("tbody1");
 
   //This only applies if obj.dataRows (fetched rows) is empty, otherwise omitted
   if (obj.dataRows === undefined || obj.dataRows.length === 0) {
@@ -178,28 +175,30 @@ container.appendChild(tr);
     //The table body
     newRow(obj.dataRows.length,obj.dataRows,false);
     //Set up autocomplete if existing
-    let autocomplete = document.getElementsByClassName("autocomplete2");
+    var autocomplete = document.getElementsByClassName("autocomplete2");
   }
 
   //Autocompletes internal function:
   //Fetch all values from the chosen column.
   //Used as selections in the autocomplete list for that column
   function  autocomplete_col_values(col,row) {
-         let arr = [];
-         for (let i=1;i<row_length;i++){
+          var arr = [];
+         for (var i=1;i<row_length;i++){
             if (i === row) {continue};
-            let val = document.getElementById("input_"+i+"_"+col);
-            arr.push(val.value);
+            var val = document.getElementById("input_"+i+"_"+col);
+            if (arr.includes(val.value) === false){
+                  arr.push(val.value);
+            }
          };
-         return [...new Set(arr)];
+         return arr;
   }
 
   //Autocomplete function
   function autocomplete(arr,input_field){
-    let currentFocus;
+    var currentFocus;
 
     input_field.addEventListener("input", function(e) {
-      let a, b, i, val = this.value;
+      var a, b, i, val = this.value;
 
       //close any already open lists of autocompleted values
       closeAllLists(input_field);
@@ -239,8 +238,8 @@ container.appendChild(tr);
 
 
 //Drag and drop - drag over event
-let dragover = function(event){
-      let id = event.target.id;
+var dragover = function(event){
+      var id = event.target.id;
       //Don't copy yet, add id to drag_arr - drag_arr should only contain same values in a row
      if ((id.startsWith('td'))&&(id !== drag_arr[drag_arr.length-1])) {
        //if user have returned back (regretting), skip last cell
@@ -258,12 +257,12 @@ let dragover = function(event){
  };
 
  //Drag and drop - end of dragging
-let dragend = function(event){
+var dragend = function(event){
     //If drop_arr last value is equal to first value, skip everything.
     //The user has withdraw the action.
-    let drop_value = document.getElementById(event.target.id).childNodes[0].value;
-    for (var entry of drag_arr) {
-          let elem = document.getElementById(entry);
+    var drop_value = document.getElementById(event.target.id).childNodes[0].value;
+    for (var i=0;i<(drag_arr.length);i++) {
+          var elem = document.getElementById(drag_arr[i]);
           elem.classList.remove('dragCell');
           if (drag_arr[drag_arr.length-1] !== event.target.id) {
              elem.childNodes[0].value = drop_value;
@@ -274,7 +273,7 @@ let dragend = function(event){
  };
 
  //Drag and drop - disable drop
-let drop = function (event) {
+var drop = function (event) {
    event.preventDefault();
  };
 
@@ -283,15 +282,15 @@ let drop = function (event) {
  function checkKey(event) {
  event = event || window.event;
 
- let pos = document.activeElement.id.split("_");
- let row = parseInt(pos[1]);
- let col = parseInt(pos[2]);
+ var pos = document.activeElement.id.split("_");
+ var row = parseInt(pos[1]);
+ var col = parseInt(pos[2]);
 
  //Check if field use autocomplete
  if (obj.autocompletes[obj.headers[col-1]]) {
    if (obj.autocompletes[obj.headers[col-1]] == 'internal' ) {
    //If yes, fetch values
-   let arr = autocomplete_col_values(col,row);
+   var arr = autocomplete_col_values(col,row);
    autocomplete(arr,document.activeElement);
  } else {
    console.log("external list");
@@ -311,16 +310,16 @@ let drop = function (event) {
 
 
  //Upon clicking in table
-let click = function (event) {
+var click = function (event) {
    //Autocomplete - close all lists
    closeAllLists(event.target);
 
-   let doc = document.getElementById(event.target.id);
+   var doc = document.getElementById(event.target.id);
 
    if (doc === null) { return };
   // if ((doc === null)||(doc.value == '')) { return };
 
-   let elem = doc.parentElement;
+   var elem = doc.parentElement;
    //Remove borders from the previous selected cell
    if (prev_selected_cell !== '') { remove_select(prev_selected_cell)};
    //Update to select current cell
@@ -395,11 +394,11 @@ var sanitizeHTML = function (str) {
 //Returns a double arry with table values
 //Sanitizes, called by savebtn and copybtn
 function get_row_values(tr) {
-  let arr = [];
-  for (let i=1;i<tr.childNodes.length; i++){
-    let str = tr.childNodes[i].childNodes[0].value;
+  var arr = [];
+  for (var i=1;i<tr.childNodes.length; i++){
+    var str = tr.childNodes[i].childNodes[0].value;
     //sanitize input if requested
-    let temp = (obj.sanitize === false) ? str : sanitizeHTML(str);
+    var temp = (obj.sanitize === false) ? str : sanitizeHTML(str);
     arr.push(temp);
   }
   //arr.push(tr.childNodes[col_length-1].childNodes[0].data);
@@ -409,61 +408,61 @@ function get_row_values(tr) {
 //Get the user input number of wanted new/copied rows
 //Called by newBtn and copyBtn
 function addRows(){
-   let num = document.getElementById("addRows").value;
+   var num = document.getElementById("addRows").value;
    return (num == "") ? 1 : num;
 };
 
 //new button pressed
-let newBtn = function (event) {
+var newBtn = function (event) {
     //Get number of new rows wanted
-    let num = addRows();
+    var num = addRows();
     newRow(num,"",true);
 };
 
 // copy button pressed
-let copyBtn = function (event) {
+var copyBtn = function (event) {
     if (prev_selected_cell == '') {
        alert("Please select a row");
     } else {    //Get the selected row
        //Get number of new rows wanted
-       let num = addRows();
+       var num = addRows();
        //Get input values from row to be copied
-       let tr = document.getElementById(prev_selected_cell).parentElement;
-       let arr = get_row_values(tr);
+       var tr = document.getElementById(prev_selected_cell).parentElement;
+       var arr = get_row_values(tr);
        //Id is returned as well, remove it.
        arr[0].pop();
-       let obj2 = {};
+       var obj2 = {};
        //Need to convert array to object
-       for (let k=0;k<obj.headers.length;k++){
+       for (var k=0;k<obj.headers.length;k++){
           obj2[obj.headers[k]] = arr[0][k];
        }
        //Create requested row(s) with the values
-       for (let i=0;i<num;i++){
+       for (var i=0;i<num;i++){
            newRow(1,[obj2],true);
        }
     }
 };
 
 // save button pressed
-let delBtn = function (event) {
+var delBtn = function (event) {
     if (prev_selected_cell == '') {
        alert("Please select a row");
     } else {    //Get the selected row
-       let td = (document.getElementById(prev_selected_cell));
+       var td = (document.getElementById(prev_selected_cell));
        document.getElementById("tbody1").removeChild(td.parentElement);
     }
 };
 
 // save button pressed
-let saveBtn = function (event) {
-    let saveJson = [];
-    let arr=[];
+var saveBtn = function (event) {
+    var saveJson = [];
+    var arr=[];
     container = document.getElementById("tbody1");
     //Fetch values by row, store in double array
 
-    for (let i=1;i<row_length;i++){
+    for (var i=1;i<row_length;i++){
         if (typeof(container.childNodes[i]) !== 'undefined'){
-         let tr = get_row_values( container.childNodes[i]);
+         var tr = get_row_values( container.childNodes[i]);
          arr.push(tr[0]);
     }}
     saveJson.push(arr);
