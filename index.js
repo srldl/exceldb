@@ -102,6 +102,7 @@ function td_element (id,innerhtml){
 //Called by newBtn, copyBtn, and during table initialization
 function newRow(num,input_text,id){
 
+
 //Number of rows
 for (var i=0;i<num;i++){
     var tr = document.createElement("tr");
@@ -109,11 +110,17 @@ for (var i=0;i<num;i++){
     tr.appendChild(td_element('count_'+row_length,row_length));
     //Second to almost last column is user info
     var td;
+    console.log(input_text);
 
     for (var j=0;j<obj.headers.length;j++){
 
       //Difference between empty row and row with input
-      var inp = (input_text == '') ? '' : (input_text[i][obj.headers[j]]);
+      //If header is not defined in the row, set it to empty
+      if ((input_text.length > 0)&&(typeof (input_text[i][obj.headers[j]]) != 'undefined')){
+        var inp = (input_text == '') ? '' : (input_text[i][obj.headers[j]]);
+      } else {
+        var inp = ''
+      }
 
       if (obj.selectlist.hasOwnProperty(obj.headers[j])) {  //Select field
          td = select_element('td_'+row_length+'_'+(j+1),'select_'+row_length+'_'+(j+1),obj.headers[j],inp);
