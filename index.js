@@ -110,7 +110,6 @@ for (var i=0;i<num;i++){
     tr.appendChild(td_element('count_'+row_length,row_length));
     //Second to almost last column is user info
     var td;
-    console.log(input_text);
 
     for (var j=0;j<obj.headers.length;j++){
 
