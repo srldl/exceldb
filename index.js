@@ -404,7 +404,8 @@ function get_row_values(tr) {
   for (var i=1;i<tr.childNodes.length; i++){
     var str = tr.childNodes[i].childNodes[0].value;
     //sanitize input if requested
-    var temp = (obj.sanitize === false) ? str : sanitizeHTML(str);
+    let temp = str;
+    if (obj.sanitize === true) {temp = sanitizeHTML(str); }
     arr.push(temp);
   }
   //arr.push(tr.childNodes[col_length-1].childNodes[0].data);
