@@ -2,7 +2,7 @@
 
 ![alt text](https://github.com/srldl/exceldb/blob/master/img/exceldb.jpg)
 
-This id the database version of an excel sheet. Excel-like web user interface which can be connected to a database backend. Lightweight code, vanilla javascript. 
+This is the database version of an excel sheet. Excel-like web user interface which can be connected to a database backend. Lightweight code, vanilla javascript. 
 
 Note: This is a second version, and replaces [edit-tabletest]( https://github.com/srldl/edit-tabletest). 
 See issues for errors and flaws as code is tested.
